@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "routes": [
+    {
+      "pattern": "/professor-cadastro",
+      "route": "/professor-cadastro.html"
+    },
+    {
+      "pattern": "/professor-cadastro/*",
+      "route": "/professor-cadastro.html"
+    },
+    {
+      "pattern": "/matricula",
+      "route": "/matricula.html"
+    },
+    {
+      "pattern": "/matricula/*",
+      "route": "/matricula.html"
+    },
+    {
+      "pattern": "/*",
+      "route": "/index.html"
+    }
+  ]
+}
