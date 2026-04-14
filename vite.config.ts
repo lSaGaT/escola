@@ -2,24 +2,11 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig, loadEnv} from 'vite';
-import { copyFileSync, mkdirSync } from 'fs';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   return {
-    plugins: [
-      react(), 
-      tailwindcss(),
-      {
-        name: 'copy-redirects',
-        apply: 'build',
-        enforce: 'post',
-        closeBundle() {
-          mkdirSync('dist', { recursive: true });
-          copyFileSync('_redirects', 'dist/_redirects');
-        },
-      },
-    ],
+    plugins: [react(), tailwindcss()],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
     },
