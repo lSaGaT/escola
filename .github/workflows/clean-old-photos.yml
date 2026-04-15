@@ -1,0 +1,21 @@
+name: Limpar Fotos Antigas
+
+on:
+  schedule:
+    # Executa todos os dias às 3:00 AM (UTC)
+    - cron: '0 3 * * *'
+  workflow_dispatch: # Permite execução manual
+
+jobs:
+  clean-old-photos:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Limpar fotos antigas
+        run: |
+          echo "🧹 Executando limpeza de fotos antigas..."
+          echo "Data: $(date)"
+
+          # Usar curl para chamar uma função RPC do Supabase
+          # Você precisará criar uma função HTTP endpoint ou usar a API direta
+          echo "💡 Para implementar: Crie um endpoint HTTP no seu backend que chama a função limpar_fotos_antigas()"
