@@ -1,0 +1,11 @@
+# Rotas específicas para páginas HTML
+/matricula /matricula.html 200
+/professor-cadastro /professor-cadastro.html 200
+/reset-password /reset-password.html 200
+
+# Rotas estáticas
+/logo.png /logo.png 200
+/favicon.png /favicon.png 200
+
+# SPA fallback - todas as outras rotas vão para index.html
+/* /index.html 200

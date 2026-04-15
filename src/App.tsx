@@ -86,6 +86,16 @@ export default function App() {
     if (hash && hash.includes('access_token') && hash.includes('type=recovery')) {
       setIsPasswordResetFlow(true);
     }
+
+    // Verificar se está na rota de matrícula ou cadastro de professor
+    const path = window.location.pathname;
+    if (path === '/matricula') {
+      // Redirecionar para a página de matrícula
+      window.location.href = '/matricula.html';
+    } else if (path === '/professor-cadastro') {
+      // Redirecionar para a página de cadastro de professor
+      window.location.href = '/professor-cadastro.html';
+    }
   }, []);
 
   useEffect(() => {
