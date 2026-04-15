@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { CheckCircle, Loader2, User, Mail, Lock, GraduationCap, Sparkles } from 'lucide-react';
 import { supabase } from '@/src/lib/supabase';
 
-const LOGO_URL = "https://i.postimg.cc/5yFN2tQq/Gemini-Generated-Image-fr4eslfr4eslfr4e-(1).png";
+const LOGO_URL = "/logo.png";
 const CHILDREN_IMAGE = "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&auto=format&fit=crop";
 
 interface FormData {

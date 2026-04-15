@@ -18,10 +18,10 @@ import {
 import { Label } from '@/components/ui/label';
 
 interface Professor {
-  id: string;
+  user_id: string;
   email: string;
   created_at: string;
-  nome?: string;
+  nome_metadata: string;
 }
 
 interface PaiComAluno {
@@ -66,27 +66,13 @@ export function AdminProfessoresPage() {
   const fetchProfessores = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('*')
-        .eq('role', 'teacher');
+      // Usar a função RPC que tem permissão para ver emails
+      const { data, error } = await supabase.rpc('listar_usuarios_com_email');
 
       if (error) throw error;
 
-      // Buscar emails dos usuários
-      const professorsWithEmails = await Promise.all(
-        (data || []).map(async (role) => {
-          const { data: userData } = await supabase.auth.admin.getUserById(role.user_id);
-          return {
-            id: role.user_id,
-            email: userData.user?.email || 'N/A',
-            created_at: role.created_at || new Date().toISOString(),
-            nome: userData.user?.user_metadata?.nome || ''
-          };
-        })
-      );
-
-      setProfessores(professorsWithEmails);
+      const professorsList = (data || []).filter((u: any) => u.role === 'teacher');
+      setProfessores(professorsList);
     } catch (err) {
       console.error('Error fetching professors:', err);
     } finally {
@@ -97,34 +83,38 @@ export function AdminProfessoresPage() {
   const fetchPais = async () => {
     setLoading(true);
     try {
-      const { data: rolesData, error: rolesError } = await supabase
-        .from('user_roles')
-        .select('*')
-        .eq('role', 'parent');
+      // Usar a função RPC que já retorna todos os dados necessários
+      const { data: usersData, error: usersError } = await supabase.rpc('listar_usuarios_com_email');
 
-      if (rolesError) throw rolesError;
+      if (usersError) throw usersError;
 
-      // Buscar alunos associados aos pais e emails
+      // Filtrar apenas pais da função RPC
+      const paisFromRPC = (usersData || []).filter((u: any) => u.role === 'parent');
+
+      // Combinar com dados da tabela alunos para mostrar o vínculo com a criança
       const paisComDados = await Promise.all(
-        (rolesData || []).map(async (role) => {
-          // Buscar email do usuário
-          const { data: userData } = await supabase.auth.admin.getUserById(role.user_id);
-
-          // Buscar aluno da turma do pai
+        paisFromRPC.map(async (pai: any) => {
+          // Buscar alunos vinculados a este pai (pelo email ou pela sala)
           const { data: alunoData } = await supabase
             .from('alunos')
             .select('*')
-            .eq('sala', role.assigned_class)
+            .eq('sala', pai.assigned_class)
             .limit(1);
 
+          // Tenta encontrar o aluno pelo nome da mãe/pai que corresponde ao metadata do usuário
+          const alunoVinculado = alunoData?.find((aluno: any) =>
+            aluno.nome_mae?.toLowerCase() === pai.nome_metadata?.toLowerCase() ||
+            aluno.nome_pai?.toLowerCase() === pai.nome_metadata?.toLowerCase()
+          );
+
           return {
-            user_id: role.user_id,
-            email: userData.user?.email || 'N/A',
-            nome_aluno: alunoData?.[0]?.nome_aluno || 'N/A',
-            nome_pai: alunoData?.[0]?.nome_pai,
-            nome_mae: alunoData?.[0]?.nome_mae,
-            sala: role.assigned_class || 'N/A',
-            created_at: role.created_at || new Date().toISOString()
+            user_id: pai.user_id,
+            email: pai.email,
+            nome_aluno: alunoVinculado?.nome_aluno || 'Criança não encontrada',
+            nome_pai: alunoVinculado?.nome_pai || null,
+            nome_mae: alunoVinculado?.nome_mae || null,
+            sala: pai.assigned_class || 'N/A',
+            created_at: pai.created_at
           };
         })
       );
@@ -172,7 +162,7 @@ export function AdminProfessoresPage() {
 
   const filteredProfessores = professores.filter(p =>
     p.email.toLowerCase().includes(searchProfessores.toLowerCase()) ||
-    p.nome?.toLowerCase().includes(searchProfessores.toLowerCase())
+    p.nome_metadata?.toLowerCase().includes(searchProfessores.toLowerCase())
   );
 
   const filteredPais = pais.filter(p =>
@@ -264,17 +254,17 @@ export function AdminProfessoresPage() {
                 <div className="space-y-3">
                   {filteredProfessores.map((professor) => (
                     <motion.div
-                      key={professor.id}
+                      key={professor.user_id}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       className="flex items-center justify-between p-4 bg-blue-50 rounded-xl border border-blue-100 hover:shadow-md transition-shadow"
                     >
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                          {professor.nome?.charAt(0)?.toUpperCase() || professor.email.charAt(0).toUpperCase()}
+                          {professor.nome_metadata?.charAt(0)?.toUpperCase() || professor.email.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-semibold text-slate-800">{professor.nome || 'Professor'}</p>
+                          <p className="font-semibold text-slate-800">{professor.nome_metadata || 'Professor'}</p>
                           <p className="text-sm text-slate-600">{professor.email}</p>
                         </div>
                       </div>
@@ -288,8 +278,8 @@ export function AdminProfessoresPage() {
                           size="icon"
                           onClick={() => openDeleteDialog({
                             type: 'professor',
-                            id: professor.id,
-                            nome: professor.nome || 'Professor',
+                            id: professor.user_id,
+                            nome: professor.nome_metadata || 'Professor',
                             email: professor.email
                           })}
                           className="text-slate-400 hover:text-red-500"

@@ -28,8 +28,10 @@ import { StudentsPage } from '@/src/components/students/StudentsPage';
 import { PhotosPage } from '@/src/components/photos/PhotosPage';
 import { NavigationMenu } from '@/src/components/navigation/NavigationMenu';
 import { AdminProfessoresPage } from '@/src/components/admin/AdminProfessoresPage';
+import { PasswordReset } from '@/src/components/PasswordReset';
+import { PasswordResetForm } from '@/src/components/PasswordResetForm';
 
-const LOGO_URL = "https://i.postimg.cc/5yFN2tQq/Gemini-Generated-Image-fr4eslfr4eslfr4e-(1).png";
+const LOGO_URL = "/logo.png";
 const CHILDREN_IMAGE = "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&auto=format&fit=crop";
 
 // Frases inspiradoras para cada página
@@ -75,6 +77,16 @@ export default function App() {
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState<string | null>(null);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [showPasswordReset, setShowPasswordReset] = useState(false);
+  const [isPasswordResetFlow, setIsPasswordResetFlow] = useState(false);
+
+  useEffect(() => {
+    // Verificar se há um token de reset na URL
+    const hash = window.location.hash;
+    if (hash && hash.includes('access_token') && hash.includes('type=recovery')) {
+      setIsPasswordResetFlow(true);
+    }
+  }, []);
 
   useEffect(() => {
     checkUser();
@@ -167,6 +179,16 @@ export default function App() {
     );
   }
 
+  // Tela de recuperação de senha (fluxo de email)
+  if (showPasswordReset) {
+    return <PasswordReset onBack={() => setShowPasswordReset(false)} />;
+  }
+
+  // Tela de reset de senha (quando vem do link do email)
+  if (isPasswordResetFlow) {
+    return <PasswordResetForm />;
+  }
+
   // Tela de login
   if (!user) {
     return (
@@ -245,6 +267,16 @@ export default function App() {
                   Entrar no Portal
                 </Button>
               </form>
+
+              <div className="mt-4 text-center">
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordReset(true)}
+                  className="text-sm text-red-500 hover:text-red-600 font-medium underline"
+                >
+                  Esqueci minha senha
+                </button>
+              </div>
 
               <div className="mt-6 text-center text-xs text-slate-500">
                 Sistema desenvolvido por{' '}
