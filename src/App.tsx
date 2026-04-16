@@ -30,6 +30,8 @@ import { NavigationMenu } from '@/src/components/navigation/NavigationMenu';
 import { AdminProfessoresPage } from '@/src/components/admin/AdminProfessoresPage';
 import { PasswordReset } from '@/src/components/PasswordReset';
 import { PasswordResetForm } from '@/src/components/PasswordResetForm';
+import { useInactivityTimeout } from '@/src/hooks/useInactivityTimeout';
+import { InactivityWarning } from '@/src/components/InactivityWarning';
 
 const LOGO_URL = "/logo.png";
 const CHILDREN_IMAGE = "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&auto=format&fit=crop";
@@ -79,6 +81,15 @@ export default function App() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [showPasswordReset, setShowPasswordReset] = useState(false);
   const [isPasswordResetFlow, setIsPasswordResetFlow] = useState(false);
+
+  // TEMPORARIAMENTE DESABILITADO - causando tela branca
+  // Hook de timeout de inatividade (30 minutos)
+  // const {
+  //   showWarning,
+  //   timeRemaining,
+  //   formatTimeRemaining,
+  //   extendSession
+  // } = useInactivityTimeout(30, 5);
 
   useEffect(() => {
     // Verificar se há um token de reset na URL
@@ -447,6 +458,16 @@ export default function App() {
           </p>
         </div>
       </div>
+
+      {/* Aviso de Inatividade - TEMPORARIAMENTE DESABILITADO */}
+      {/* {user && (
+        <InactivityWarning
+          show={showWarning}
+          timeRemaining={timeRemaining}
+          formatTimeRemaining={formatTimeRemaining}
+          onExtend={extendSession}
+        />
+      )}*/}
     </div>
   );
 }
