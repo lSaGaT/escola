@@ -28,7 +28,7 @@ interface KanbanData {
 
 export function KanbanBoard({ onEditStudent, refreshTrigger }: KanbanBoardProps) {
   // Ordem correta das turmas
-  const CLASS_ORDER = ['Berçário', 'Maternal 1', 'Maternal 2', 'Pré 1', 'Pré 2', '1ª Série'];
+  const CLASS_ORDER = ['Maternal 1', 'Maternal 2', 'Maternal 3', '1º Período', '2º Período'];
   
   const [kanbanData, setKanbanData] = useState<KanbanData>({});
   const [columns, setColumns] = useState<string[]>([]);

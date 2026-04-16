@@ -1,4 +1,8 @@
-export type SchoolClass = 'Maternal 1' | 'Maternal 2' | 'Maternal 3' | '1º Período' | '2º Período' | 'Geral';
+// Turmas para atribuição de usuários (professores/pais)
+export type AssignedClass = 'Maternal 1' | 'Maternal 2' | 'Maternal 3' | '1º Período' | '2º Período';
+
+// Turmas para fotos e agenda (inclui Geral para fotos da escola inteira)
+export type SchoolClass = AssignedClass | 'Geral';
 
 export interface Photo {
   id: string;
@@ -12,7 +16,7 @@ export interface Photo {
 export interface UserRole {
   user_id: string;
   role: 'teacher' | 'parent';
-  assigned_class?: SchoolClass;
+  assigned_class?: AssignedClass;
 }
 
 // Tipos para Admin/Alunos
