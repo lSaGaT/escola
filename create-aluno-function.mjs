@@ -37,25 +37,13 @@ async function createAlunoFunction() {
       AS $$
       DECLARE
         v_aluno_id UUID;
-        v_sala_id UUID;
       BEGIN
-        -- Buscar o ID da sala pelo nome
-        SELECT id INTO v_sala_id
-        FROM salas
-        WHERE nome = p_sala AND ativo = true
-        LIMIT 1;
-
-        IF v_sala_id IS NULL THEN
-          RAISE EXCEPTION 'Sala não encontrada: %', p_sala;
-        END IF;
-
         -- Inserir o aluno
         INSERT INTO alunos (
           nome_aluno,
           nome_pai,
           nome_mae,
           telefone_contato,
-          sala_id,
           sala,
           data_nascimento,
           observacoes,
@@ -65,7 +53,6 @@ async function createAlunoFunction() {
           p_nome_pai,
           p_nome_mae,
           p_telefone_contato,
-          v_sala_id,
           p_sala,
           p_data_nascimento,
           p_observacoes,
