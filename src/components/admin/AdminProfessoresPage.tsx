@@ -131,24 +131,26 @@ export function AdminProfessoresPage() {
     if (!itemToDelete) return;
 
     try {
+      // Usar função RPC para deletar usuário
+      const { error: deleteError } = await supabase.rpc('deletar_usuario', {
+        p_user_id: itemToDelete.id
+      });
+
+      if (deleteError) {
+        throw deleteError;
+      }
+
+      // Atualizar a lista
       if (itemToDelete.type === 'professor') {
-        // Deletar usuário do Supabase Auth
-        await supabase.auth.admin.deleteUser(itemToDelete.id);
-
-        // Deletar registro em user_roles
-        await supabase.from('user_roles').delete().eq('user_id', itemToDelete.id);
-
         fetchProfessores();
       } else {
-        // Deletar pai
-        await supabase.auth.admin.deleteUser(itemToDelete.id);
-        await supabase.from('user_roles').delete().eq('user_id', itemToDelete.id);
-
         fetchPais();
       }
 
       setDeleteDialogOpen(false);
       setItemToDelete(null);
+
+      alert('Usuário excluído com sucesso! A conta foi removida do sistema de permissões.');
     } catch (err) {
       console.error('Error deleting:', err);
       alert('Erro ao excluir: ' + (err as any).message);
