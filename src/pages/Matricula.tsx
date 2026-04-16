@@ -119,20 +119,23 @@ export default function Matricula() {
 
       console.log('User role criado:', roleData);
 
-      // 3. Criar registro do aluno
-      const { error: alunoError } = await supabase.from('alunos').insert([
-        {
-          nome_aluno: formData.nome_aluno,
-          nome_pai: formData.nome_pai || null,
-          nome_mae: formData.nome_mae || null,
-          telefone_contato: formData.telefone_contato || null,
-          sala: formData.sala,
-          data_nascimento: formData.data_nascimento || null,
-          observacoes: formData.observacoes || null,
-        },
-      ]);
+      // 3. Criar registro do aluno usando função RPC
+      const { data: alunoData, error: alunoError } = await supabase.rpc('inserir_aluno_matricula', {
+        p_nome_aluno: formData.nome_aluno,
+        p_sala: formData.sala,
+        p_nome_pai: formData.nome_pai || null,
+        p_nome_mae: formData.nome_mae || null,
+        p_telefone_contato: formData.telefone_contato || null,
+        p_data_nascimento: formData.data_nascimento || null,
+        p_observacoes: formData.observacoes || null,
+      });
 
-      if (alunoError) throw alunoError;
+      if (alunoError) {
+        console.error('Erro ao criar aluno:', alunoError);
+        throw new Error('Erro ao cadastrar aluno: ' + alunoError.message);
+      }
+
+      console.log('Aluno criado com ID:', alunoData);
 
       setStep('success');
     } catch (error: any) {
