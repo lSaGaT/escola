@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { StudentForm } from '@/src/components/admin/StudentForm';
 
-const CLASSES = ['Maternal 1', 'Maternal 2', 'Maternal 3', 'Maternal 4', '1ª Série'];
+const CLASSES = ['Maternal 1', 'Maternal 2', 'Maternal 3', '1º Período', '2º Período'];
 
 export function StudentsPage({ role, assignedClass }: { role: 'teacher' | 'parent'; assignedClass?: string }) {
   const [students, setStudents] = useState<Aluno[]>([]);

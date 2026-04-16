@@ -1,9 +1,9 @@
-export type SchoolClass = 'Maternal 1' | 'Maternal 2' | 'Maternal 3' | 'Maternal 4' | '1ª Série';
+export type SchoolClass = 'Maternal 1' | 'Maternal 2' | 'Maternal 3' | '1º Período' | '2º Período' | 'Geral';
 
 export interface Photo {
   id: string;
   url: string;
-  class_name: SchoolClass;
+  class_name: SchoolClass | SchoolClass[];
   description?: string;
   uploaded_by?: string;
   created_at: string;

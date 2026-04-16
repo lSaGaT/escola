@@ -33,7 +33,7 @@ interface NewConversationDialogProps {
   onConversationCreated: (contact: Contact) => void;
 }
 
-const CLASSES: SchoolClass[] = ['Maternal 1', 'Maternal 2', 'Maternal 3', 'Maternal 4', '1ª Série'];
+const CLASSES: SchoolClass[] = ['Maternal 1', 'Maternal 2', 'Maternal 3', '1º Período', '2º Período'];
 
 export function NewConversationDialog({
   open,

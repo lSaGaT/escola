@@ -31,7 +31,7 @@ interface AgendaEvent {
   criado_em: string;
 }
 
-const CLASSES = ['Maternal 1', 'Maternal 2', 'Maternal 3', 'Maternal 4', '1ª Série'];
+const CLASSES = ['Maternal 1', 'Maternal 2', 'Maternal 3', '1º Período', '2º Período', 'Geral'];
 
 export function AgendaPage({ role }: { role: 'teacher' | 'parent' }) {
   const [currentDate, setCurrentDate] = useState(new Date());

@@ -17,7 +17,7 @@ import {
   DialogFooter
 } from '@/components/ui/dialog';
 
-const CLASSES: SchoolClass[] = ['Maternal 1', 'Maternal 2', 'Maternal 3', 'Maternal 4', '1ª Série'];
+const CLASSES: SchoolClass[] = ['Maternal 1', 'Maternal 2', 'Maternal 3', '1º Período', '2º Período', 'Geral'];
 
 export function PhotosPage({ user, role, assignedClass }: {
   user: any;
@@ -48,7 +48,8 @@ export function PhotosPage({ user, role, assignedClass }: {
     setLoading(true);
     setError(null);
     try {
-      if (role === 'parent' && assignedClass && currentClass !== assignedClass) {
+      // Pais só podem ver fotos da turma deles ou fotos marcadas como "Geral"
+      if (role === 'parent' && assignedClass && currentClass !== assignedClass && currentClass !== 'Geral') {
         setPhotos([]);
         setLoading(false);
         return;
