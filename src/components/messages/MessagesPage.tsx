@@ -130,20 +130,20 @@ export function MessagesPage({ user, role, assignedClass }: {
             const studentName = contact.student_name;
             const className = contact.assigned_class;
 
-            // Buscar última mensagem desta conversa
+            // Buscar última mensagem desta conversa - CRÍTICO: apenas mensagens com o usuário atual
             const { data: lastMsg } = await supabase
               .from('mensagens')
               .select('*')
-              .or(`remetente_id.eq.${parentId},destinatario_id.eq.${parentId}`)
+              .or(`and(remetente_id.eq.${parentId},destinatario_id.eq.${user.id}),and(remetente_id.eq.${user.id},destinatario_id.eq.${parentId})`)
               .order('criado_em', { ascending: false })
               .limit(1)
               .maybeSingle();
 
-            // Buscar mensagens não lidas
+            // Buscar mensagens não lidas - CRÍTICO: apenas mensagens com o usuário atual
             const { data: unreadMsgs } = await supabase
               .from('mensagens')
               .select('*')
-              .or(`remetente_id.eq.${parentId},destinatario_id.eq.${parentId}`)
+              .or(`and(remetente_id.eq.${parentId},destinatario_id.eq.${user.id}),and(remetente_id.eq.${user.id},destinatario_id.eq.${parentId})`)
               .eq('lida', false);
 
             const hasUnread = (unreadMsgs && unreadMsgs.length > 0);
@@ -177,20 +177,20 @@ export function MessagesPage({ user, role, assignedClass }: {
             const teacherName = contact.nome;
             const className = contact.assigned_class;
 
-            // Buscar última mensagem desta conversa
+            // Buscar última mensagem desta conversa - CRÍTICO: apenas mensagens com o usuário atual
             const { data: lastMsg } = await supabase
               .from('mensagens')
               .select('*')
-              .or(`remetente_id.eq.${teacherId},destinatario_id.eq.${teacherId}`)
+              .or(`and(remetente_id.eq.${teacherId},destinatario_id.eq.${user.id}),and(remetente_id.eq.${user.id},destinatario_id.eq.${teacherId})`)
               .order('criado_em', { ascending: false })
               .limit(1)
               .maybeSingle();
 
-            // Buscar mensagens não lidas
+            // Buscar mensagens não lidas - CRÍTICO: apenas mensagens com o usuário atual
             const { data: unreadMsgs } = await supabase
               .from('mensagens')
               .select('*')
-              .or(`remetente_id.eq.${teacherId},destinatario_id.eq.${teacherId}`)
+              .or(`and(remetente_id.eq.${teacherId},destinatario_id.eq.${user.id}),and(remetente_id.eq.${user.id},destinatario_id.eq.${teacherId})`)
               .eq('lida', false);
 
             const hasUnread = (unreadMsgs && unreadMsgs.length > 0);
@@ -236,8 +236,9 @@ export function MessagesPage({ user, role, assignedClass }: {
         // Pai vendo mensagens da escola
         query = query.eq('remetente_id', user.id);
       } else {
-        // Conversa privada
-        query = query.or(`remetente_id.eq.${conversationId},destinatario_id.eq.${conversationId}`);
+        // Conversa privada - CRÍTICO: só mostra mensagens onde o usuário atual participa
+        // Mensagens entre conversationId E user.id (ambos os lados)
+        query = query.or(`and(remetente_id.eq.${conversationId},destinatario_id.eq.${user.id}),and(remetente_id.eq.${user.id},destinatario_id.eq.${conversationId})`);
       }
 
       const { data, error } = await query;
@@ -333,11 +334,13 @@ export function MessagesPage({ user, role, assignedClass }: {
           .neq('remetente_id', user.id)
           .eq('lida', false);
       } else {
-        // Conversa privada
+        // Conversa privada - CRÍTICO: só marca mensagens onde o usuário atual participa
+        // Mensagens não lidas entre conversationId E user.id (onde o usuário atual é o destinatário)
         query = supabase
           .from('mensagens')
           .select('*')
-          .or(`and(remetente_id.eq.${conversationId},lida.eq.false),and(destinatario_id.eq.${conversationId},lida.eq.false)`);
+          .eq('lida', false)
+          .or(`and(remetente_id.eq.${conversationId},destinatario_id.eq.${user.id}),and(remetente_id.eq.${user.id},destinatario_id.eq.${conversationId})`);
       }
 
       if (query) {
