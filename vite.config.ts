@@ -32,12 +32,14 @@ export default defineConfig(({mode}) => {
           main: path.resolve(__dirname, 'index.html'),
           matricula: path.resolve(__dirname, 'src/main-matricula.tsx'),
           'professor-cadastro': path.resolve(__dirname, 'src/main-professor-cadastro.tsx'),
+          'reset-password': path.resolve(__dirname, 'src/pages/PasswordResetPage.tsx'),
         },
         output: {
           entryFileNames: (chunkInfo) => {
             // Nomes específicos para os entry points
             if (chunkInfo.name === 'matricula') return 'assets/matricula.js';
             if (chunkInfo.name === 'professor-cadastro') return 'assets/professor-cadastro.js';
+            if (chunkInfo.name === 'reset-password') return 'assets/reset-password.js';
             return 'assets/[name]-[hash].js';
           },
           chunkFileNames: 'assets/[name]-[hash].js',
