@@ -9,7 +9,9 @@ import {
   Loader2,
   AlertCircle,
   LogOut,
-  User
+  User,
+  Phone,
+  Mail
 } from 'lucide-react';
 import { supabase } from '@/src/lib/supabase';
 import { SchoolClass } from '@/src/types';
@@ -450,6 +452,20 @@ export default function App() {
         {/* Footer */}
         <div className="p-4 border-t border-red-100 text-center text-xs text-slate-500">
           <p className="mb-1">© {new Date().getFullYear()} Escolinha Recanto Alegre</p>
+          <p className="mb-1">
+            Serra dos Orgãos, 586 - Ribeiro de Abreu - Belo Horizonte - MG - CEP: 31872-300
+          </p>
+          <p className="mb-1 flex items-center justify-center gap-3">
+            <a
+              href="https://wa.me/5531975741515"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-slate-500 hover:text-green-600 transition-colors"
+            >
+              <Phone className="w-3 h-3" />
+              (31) 97574-1515
+            </a>
+          </p>
           <p>
             Sistema desenvolvido por{' '}
             <a href="https://nodoprime.com.br" target="_blank" rel="noopener noreferrer" className="text-red-500 hover:underline font-medium">

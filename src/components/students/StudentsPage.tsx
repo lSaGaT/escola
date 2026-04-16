@@ -222,7 +222,14 @@ export function StudentsPage({ role, assignedClass }: { role: 'teacher' | 'paren
                             {student.telefone_contato && (
                               <div className="flex items-center gap-2 text-slate-600">
                                 <Phone className="h-4 w-4 text-red-400" />
-                                <span>{student.telefone_contato}</span>
+                                <a
+                                  href={`https://wa.me/55${student.telefone_contato.replace(/\D/g, '')}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="hover:text-green-600 hover:underline transition-colors"
+                                >
+                                  {student.telefone_contato}
+                                </a>
                               </div>
                             )}
                             <div className="flex items-center gap-2 text-slate-600">

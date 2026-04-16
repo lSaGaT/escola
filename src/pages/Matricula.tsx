@@ -522,11 +522,19 @@ export default function Matricula() {
           {/* Footer */}
           <div className="mt-8 pt-6 border-t border-red-100 text-center text-sm text-slate-600">
             <p>© {new Date().getFullYear()} Escola Recanto Alegre</p>
+            <p className="mt-2">
+              Serra dos Orgãos, 586 - Ribeiro de Abreu - Belo Horizonte - MG - CEP: 31872-300
+            </p>
             <p className="mt-1 flex items-center justify-center gap-4">
-              <span className="flex items-center gap-1">
+              <a
+                href="https://wa.me/5531975741515"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-slate-600 hover:text-green-600 transition-colors"
+              >
                 <Phone className="w-3 h-3" />
-                (11) 98765-4321
-              </span>
+                (31) 97574-1515
+              </a>
               <span className="flex items-center gap-1">
                 <Mail className="w-3 h-3" />
                 contato@recantoalegre.com.br

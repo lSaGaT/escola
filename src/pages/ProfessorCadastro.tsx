@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { CheckCircle, Loader2, User, Mail, Lock, GraduationCap, Sparkles } from 'lucide-react';
+import { CheckCircle, Loader2, User, Mail, Lock, GraduationCap, Sparkles, Phone } from 'lucide-react';
 import { supabase } from '@/src/lib/supabase';
 
 const LOGO_URL = "/logo.png";
@@ -396,6 +396,24 @@ export default function ProfessorCadastro() {
           {/* Footer */}
           <div className="mt-8 pt-6 border-t border-blue-100 text-center text-sm text-slate-600">
             <p>© {new Date().getFullYear()} Escola Recanto Alegre</p>
+            <p className="mt-2">
+              Serra dos Orgãos, 586 - Ribeiro de Abreu - Belo Horizonte - MG - CEP: 31872-300
+            </p>
+            <p className="mt-1 flex items-center justify-center gap-4">
+              <a
+                href="https://wa.me/5531975741515"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-slate-600 hover:text-green-600 transition-colors"
+              >
+                <Phone className="w-3 h-3" />
+                (31) 97574-1515
+              </a>
+              <span className="flex items-center gap-1">
+                <Mail className="w-3 h-3" />
+                contato@recantoalegre.com.br
+              </span>
+            </p>
             <p className="mt-1">
               Sistema desenvolvido por{' '}
               <a href="https://nodoprime.com.br" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline font-medium">

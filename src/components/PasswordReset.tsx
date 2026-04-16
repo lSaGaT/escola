@@ -169,6 +169,19 @@ export function PasswordReset({ onBack }: PasswordResetProps) {
         {/* Footer */}
         <div className="mt-8 pt-6 border-t border-red-100 text-center text-xs text-slate-500">
           <p>© {new Date().getFullYear()} Escolinha Recanto Alegre</p>
+          <p className="mt-1">
+            Serra dos Orgãos, 586 - Ribeiro de Abreu - Belo Horizonte - MG
+          </p>
+          <p className="mt-1">
+            <a
+              href="https://wa.me/5531975741515"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-500 hover:text-green-600 transition-colors"
+            >
+              (31) 97574-1515
+            </a>
+          </p>
         </div>
       </motion.div>
     </div>
