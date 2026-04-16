@@ -54,7 +54,7 @@ async function createAlunoFunction() {
           p_nome_mae,
           p_telefone_contato,
           p_sala,
-          p_data_nascimento,
+          CASE WHEN p_data_nascimento IS NOT NULL AND p_data_nascimento != '' THEN p_data_nascimento::date ELSE NULL END,
           p_observacoes,
           NOW()
         ) RETURNING id INTO v_aluno_id;
