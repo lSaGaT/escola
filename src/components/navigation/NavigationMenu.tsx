@@ -30,10 +30,37 @@ export function NavigationMenu({ user, role, currentPage, onPageChange, onLogout
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
+    const fetchUserName = async () => {
+      if (role === 'teacher') {
+        // Professores usam o nome do user_metadata
+        setUserName(user?.user_metadata?.nome || user?.email?.split('@')[0] || 'Usuário');
+      } else if (role === 'parent') {
+        // Pais: buscar nome do aluno vinculado
+        const parentName = user?.user_metadata?.nome;
+        if (parentName) {
+          const { data } = await supabase
+            .from('alunos')
+            .select('nome_aluno')
+            .or(`nome_pai.eq.${parentName},nome_mae.eq.${parentName}`)
+            .limit(1);
+
+          if (data && data.length > 0) {
+            setUserName(data[0].nome_aluno);
+          } else {
+            setUserName(parentName || user?.email?.split('@')[0] || 'Usuário');
+          }
+        } else {
+          setUserName(user?.email?.split('@')[0] || 'Usuário');
+        }
+      } else {
+        setUserName(user?.email?.split('@')[0] || 'Usuário');
+      }
+    };
+
     if (user) {
-      setUserName(user.email?.split('@')[0] || 'Usuário');
+      fetchUserName();
     }
-  }, [user]);
+  }, [user, role]);
 
   const filteredMenuItems = MENU_ITEMS.filter(item => {
     if (item.teacherOnly && role !== 'teacher') return false;
