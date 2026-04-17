@@ -191,7 +191,7 @@ export default function Matricula() {
               Seu login: <span className="font-bold">{formData.email}</span>
             </p>
             <p className="text-xs text-green-600 mt-2">
-              Acesse o sistema em: <a href="/" className="underline font-medium">localhost:3000</a>
+              Acesse o sistema em: <a href="https://escolarecantoalegre.com.br/" className="underline font-medium" target="_blank" rel="noopener noreferrer">escolarecantoalegre.com.br</a>
             </p>
           </div>
 
